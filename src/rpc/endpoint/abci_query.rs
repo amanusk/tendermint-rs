@@ -1,10 +1,11 @@
 //! `/abci_query` endpoint JSONRPC wrapper
 
 use crate::{
-    abci::{Code, Log, Path, Proof},
+    abci::{Log, Path, Proof},
     block, rpc, serializers,
 };
 use serde::{Deserialize, Serialize};
+use subtle_encoding::hex;
 
 /// Query the ABCI application for information
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -13,7 +14,7 @@ pub struct Request {
     path: Option<Path>,
 
     /// Data to query
-    data: Vec<u8>,
+    data: String,
 
     /// Block height
     height: Option<block::Height>,
@@ -30,7 +31,7 @@ impl Request {
     {
         Self {
             path,
-            data: data.into(),
+            data: String::from_utf8(hex::encode(data.into())).unwrap(),
             height,
             prove,
         }
@@ -58,7 +59,7 @@ impl rpc::Response for Response {}
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct AbciQuery {
     /// Response code
-    pub code: Code,
+    pub code: Option<String>,
 
     /// Log value
     pub log: Log,
@@ -78,17 +79,17 @@ pub struct AbciQuery {
 
     /// Key
     // TODO(tarcieri): parse to Vec<u8>?
-    pub key: String,
+    pub key: Option<String>,
 
     /// Value
     // TODO(tarcieri): parse to Vec<u8>?
-    pub value: String,
+    pub value: Option<String>,
 
     /// Proof (if requested)
     pub proof: Option<Proof>,
 
     /// Block height
-    pub height: block::Height,
+    pub height: Option<block::Height>,
 
     /// Codespace
     pub codespace: Option<String>,

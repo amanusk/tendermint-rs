@@ -32,16 +32,16 @@ impl rpc::Request for Request {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Response {
     /// Code
-    pub code: Code,
+    pub code: Option<Code>,
+
+    /// Transaction hash
+    pub hash: transaction::Hash,
 
     /// Data
     pub data: Data,
 
     /// Log
     pub log: Log,
-
-    /// Transaction hash
-    pub hash: transaction::Hash,
 }
 
 impl rpc::Response for Response {}

@@ -8,6 +8,7 @@ use crate::{
     Genesis,
 };
 use hyper::header;
+use serde_json::Value;
 use std::io::Read;
 
 /// Tendermint RPC client.
@@ -42,11 +43,11 @@ impl Client {
         prove: bool,
     ) -> Result<abci_query::AbciQuery, Error>
     where
-        D: Into<Vec<u8>>,
+        D: Into<Vec<u8>> + std::fmt::Debug,
     {
-        Ok(self
-            .perform(abci_query::Request::new(path, data, height, prove))?
-            .response)
+        let requst = abci_query::Request::new(path, data, height, prove);
+        println!("Request {:?}", requst);
+        Ok(self.perform(requst)?.response)
     }
 
     /// `/block`: get block at a given height.
@@ -173,6 +174,8 @@ impl Client {
         headers.set(header::ContentType::json());
         headers.set(header::UserAgent("tendermint.rs RPC client".to_owned()));
 
+        println! {"Request body {:?}", request_body};
+
         let http_client = hyper::Client::new();
 
         let mut res = http_client
@@ -186,6 +189,10 @@ impl Client {
         res.read_to_end(&mut response_body)
             .map_err(Error::server_error)?;
 
+        println!("Response Body {:?}", response_body);
+
+        let v: Value = serde_json::from_slice(&response_body).unwrap();
+        println!("Value {:?}", v);
         R::Response::from_json(&response_body)
     }
 }

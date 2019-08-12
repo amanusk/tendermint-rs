@@ -2,6 +2,24 @@
 
 use super::{Error, Id, Version};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use serde_json::Value;
+
+use crate::abci::{transaction, Code, Data, Log};
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Resp {
+    /// Code
+    pub code: Option<Code>,
+
+    /// Transaction hash
+    pub hash: transaction::Hash,
+
+    /// Data
+    pub data: Data,
+
+    /// Log
+    pub log: Log,
+}
 
 /// JSONRPC responses
 pub trait Response: Serialize + DeserializeOwned + Sized {
@@ -10,8 +28,11 @@ pub trait Response: Serialize + DeserializeOwned + Sized {
     where
         T: AsRef<[u8]>,
     {
-        let wrapper: Wrapper<Self> =
-            serde_json::from_slice(response.as_ref()).map_err(Error::parse_error)?;
+        let v: Value = serde_json::from_slice(response.as_ref()).unwrap();
+        println!("Value of Response {:?}", v);
+        // let r: Resp = serde_json::from_slice(response.as_ref()).unwrap();
+        // println!("Value {:?}", r);
+        let wrapper: Wrapper<Self> = serde_json::from_slice(response.as_ref()).unwrap();
 
         wrapper.into_result()
     }
