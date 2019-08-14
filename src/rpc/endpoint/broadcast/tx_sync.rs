@@ -1,7 +1,7 @@
 //! `/broadcast_tx_sync`: returns with the response from `CheckTx`.
 
 use crate::{
-    abci::{transaction, Code, Data, Log, Transaction},
+    abci::{transaction, Data, Log, Transaction},
     rpc,
 };
 use serde::{Deserialize, Serialize};
@@ -32,7 +32,7 @@ impl rpc::Request for Request {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Response {
     /// Code
-    pub code: Option<Code>,
+    pub code: Option<u32>,
 
     /// Transaction hash
     pub hash: transaction::Hash,

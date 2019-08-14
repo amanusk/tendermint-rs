@@ -2,7 +2,7 @@
 //! if we timeout waiting for tx to commit.
 
 use crate::{
-    abci::{transaction, Code, Data, Log, Transaction},
+    abci::{transaction, Data, Log, Transaction},
     block, rpc,
 };
 use serde::{Deserialize, Serialize};
@@ -55,11 +55,11 @@ impl rpc::Response for Response {}
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct TxResult {
     /// Code
-    pub code: Code,
+    pub code: Option<u32>,
 
     /// Data
-    pub data: Data,
+    pub data: Option<Data>,
 
     /// Log
-    pub log: Log,
+    pub log: Option<Log>,
 }

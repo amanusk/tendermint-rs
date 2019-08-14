@@ -2,9 +2,9 @@
     "jsonrpc": "2.0",
     "id": "",
     "result": {
-        "code": "0",
+        "code": 0,
         "data": "",
         "log": "",
-        "hash": "0D33F2F03A5234F38706E43004489E061AC40A2E"
+        "hash": "FAC36F5CD906E97A7B37E160D47B33B505A1CA271A8C4837686E07489772FE05"
     }
 }
