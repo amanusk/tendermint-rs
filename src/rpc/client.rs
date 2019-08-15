@@ -8,7 +8,6 @@ use crate::{
     Genesis,
 };
 use hyper::header;
-use serde_json::Value;
 use std::io::Read;
 
 /// Tendermint RPC client.
@@ -18,6 +17,8 @@ pub struct Client {
     /// Address of the RPC server
     address: net::Address,
 }
+
+use serde_json::Value;
 
 impl Client {
     /// Create a new Tendermint RPC client, connecting to the given address
@@ -158,7 +159,6 @@ impl Client {
         R: rpc::Request,
     {
         let request_body = request.into_json();
-
         let (host, port) = match &self.address {
             net::Address::Tcp { host, port, .. } => (host, port),
             other => Err(Error::invalid_params(&format!(
@@ -192,7 +192,7 @@ impl Client {
         println!("Response Body {:?}", response_body);
 
         let v: Value = serde_json::from_slice(&response_body).unwrap();
-        println!("Value {:?}", v);
+        println!("Response body {:?}", v);
         R::Response::from_json(&response_body)
     }
 }

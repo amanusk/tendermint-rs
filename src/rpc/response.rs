@@ -2,7 +2,6 @@
 
 use super::{Error, Id, Version};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
-use serde_json::Value;
 
 use crate::abci::{transaction, Code, Data, Log};
 
@@ -28,11 +27,8 @@ pub trait Response: Serialize + DeserializeOwned + Sized {
     where
         T: AsRef<[u8]>,
     {
-        let v: Value = serde_json::from_slice(response.as_ref()).unwrap();
-        println!("Value of Response {:?}", v);
-        // let r: Resp = serde_json::from_slice(response.as_ref()).unwrap();
-        // println!("Value {:?}", r);
-        let wrapper: Wrapper<Self> = serde_json::from_slice(response.as_ref()).unwrap();
+        let wrapper: Wrapper<Self> =
+            serde_json::from_slice(response.as_ref()).map_err(Error::parse_error)?;
 
         wrapper.into_result()
     }
