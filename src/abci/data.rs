@@ -40,8 +40,8 @@ impl FromStr for Data {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         // Accept either upper or lower case hex
-        let bytes = hex::decode_upper(s)
-            .or_else(|_| hex::decode(s))
+        let bytes = hex::decode(s)
+            .or_else(|_| hex::decode_upper(s))
             .map_err(|_| ErrorKind::Parse)?;
 
         Ok(Data(bytes))
@@ -50,7 +50,7 @@ impl FromStr for Data {
 
 impl<'de> Deserialize<'de> for Data {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
-        let bytes = hex::decode(String::deserialize(deserializer)?.as_bytes())
+        let bytes = hex::decode(String::deserialize(deserializer)?.to_lowercase().as_bytes())
             .map_err(|e| D::Error::custom(format!("{}", e)))?;
 
         Ok(Self(bytes))

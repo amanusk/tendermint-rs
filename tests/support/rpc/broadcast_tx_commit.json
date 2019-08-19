@@ -7,7 +7,7 @@
         "code": 0,
         "deliver_tx": {
             "log": "",
-            "data": "",
+            "data": "AA102040",
             "code": "0"
         },
         "check_tx": {
