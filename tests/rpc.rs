@@ -155,7 +155,7 @@ mod endpoints {
 
         assert_eq!(
             &response.hash.to_string(),
-            "75CA0F856A4DA078FC4911580360E70CEFB2EBEE"
+            "88D4266FD4E6338D13B845FCF289579D209C897823B9217DA3E161936F031589"
         );
     }
 

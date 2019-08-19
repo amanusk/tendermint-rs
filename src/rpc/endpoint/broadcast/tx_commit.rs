@@ -55,7 +55,7 @@ impl rpc::Response for Response {}
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct TxResult {
     /// Code
-    pub code: Code,
+    pub code: Option<Code>,
 
     /// Data
     pub data: Option<Data>,
