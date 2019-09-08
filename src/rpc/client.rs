@@ -18,7 +18,7 @@ pub struct Client {
     address: net::Address,
 }
 
-use serde_json::Value;
+// use serde_json::Value;
 
 impl Client {
     /// Create a new Tendermint RPC client, connecting to the given address
@@ -47,7 +47,7 @@ impl Client {
         D: Into<Vec<u8>> + std::fmt::Debug,
     {
         let requst = abci_query::Request::new(path, data, height, prove);
-        println!("Request {:?}", requst);
+        // println!("Request {:?}", requst);
         Ok(self.perform(requst)?.response)
     }
 
@@ -174,7 +174,7 @@ impl Client {
         headers.set(header::ContentType::json());
         headers.set(header::UserAgent("tendermint.rs RPC client".to_owned()));
 
-        println! {"Request body {:?}", request_body};
+        // println! {"Request body {:?}", request_body};
 
         let http_client = hyper::Client::new();
 
@@ -189,10 +189,10 @@ impl Client {
         res.read_to_end(&mut response_body)
             .map_err(Error::server_error)?;
 
-        println!("Response Body {:?}", response_body);
+        // println!("Response Body {:?}", response_body);
 
-        let v: Value = serde_json::from_slice(&response_body).unwrap();
-        println!("Response body {:?}", v);
+        // let v: Value = serde_json::from_slice(&response_body).unwrap();
+        // println!("Response body {:?}", v);
         R::Response::from_json(&response_body)
     }
 }
