@@ -83,6 +83,13 @@ impl<'de> Deserialize<'de> for Code {
                 Ok(Code::from(val as u32))
             }
 
+            fn visit_u32<E>(self, val: u32) -> Result<Self::Value, E>
+            where
+                E: serde::de::Error,
+            {
+                Ok(Code::from(val))
+            }
+
             fn visit_str<E>(self, val: &str) -> Result<Self::Value, E>
             where
                 E: serde::de::Error,

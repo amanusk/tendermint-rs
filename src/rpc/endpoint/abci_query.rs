@@ -1,7 +1,7 @@
 //! `/abci_query` endpoint JSONRPC wrapper
 
 use crate::{
-    abci::{Log, Path, Proof},
+    abci::{Code, Log, Path, Proof},
     block, rpc, serializers,
 };
 use serde::{Deserialize, Serialize};
@@ -59,7 +59,7 @@ impl rpc::Response for Response {}
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct AbciQuery {
     /// Response code
-    pub code: Option<String>,
+    pub code: Code,
 
     /// Log value
     pub log: Log,
